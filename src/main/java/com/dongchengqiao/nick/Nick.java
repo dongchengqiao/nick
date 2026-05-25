@@ -13,6 +13,7 @@ public class Nick implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		NickConfig.load();
+		NickClientConfig.load();
 		NickCommand.register();
 
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
