@@ -1,9 +1,66 @@
-# Nick
+# Nick - 昵称模组
 
-## Setup
+一个 Fabric 服务端模组，允许玩家修改自己的显示名称（昵称），支持团队颜色、前缀/后缀，并可通过昵称查找玩家。
 
-For setup instructions, please see the [Fabric Documentation page](https://docs.fabricmc.net/develop/getting-started/creating-a-project#setting-up) related to the IDE that you are using.
+## 命令
 
-## License
+### 设置昵称
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+| 命令 | 权限 | 说明 |
+|------|------|------|
+| `/nick set <昵称>` | 所有人 | 设置自己的昵称 |
+| `/nick set <目标> <昵称>` | OP | 设置他人的昵称 |
+| `/nick reset` | 所有人 | 重置自己的昵称 |
+| `/nick reset <目标>` | OP | 重置他人的昵称 |
+
+`<目标>` 支持玩家名、`@p`、`@a`、`@r`、`@s` 等选择器。
+
+### 昵称查找
+
+设置昵称后，所有命令皆可用昵称替代玩家名，例如：
+- `/tp 小明`
+- `/msg 小明`
+- `/kick 小明`
+
+**注意**：若昵称与真实玩家名同时存在，玩家名优先匹配。
+
+### 昵称格式
+
+- 单个词直接写：`/nick set 小明`
+- 带空格的昵称用引号：`/nick set "小明同学"`
+- 会显示队伍的团队颜色、前缀和后缀
+
+## 效果
+
+- ✅ 聊天消息显示昵称
+- ✅ Tab 列表显示昵称
+- ✅ 头顶名签显示昵称（单人模式）/ 需客户端装模组（服务器模式）
+- ✅ 团队颜色生效
+- ✅ 昵称查找玩家
+
+## 安装
+
+### 服务端
+1. 将 `nick-*.jar` 放入 `mods/` 目录
+2. 重启服务器
+
+### 客户端（可选）
+如需在服务器模式下头顶名签显示昵称，客户端也需安装此模组。不装则仅聊天和 Tab 列表生效。
+
+## 配置文件
+
+`config/nick.json`，格式示例：
+
+```json
+{
+  "Player58": {"nick": "小明"},
+  "Steve": {"nick": "小红"}
+}
+```
+
+## 技术信息
+
+- Minecraft 版本：26.1
+- 框架：Fabric Loader 0.19.2 / Fabric API 0.149.0+26.1.2
+- Maven 组：`com.dongchengqiao.nick`
+- 主类：`com.dongchengqiao.nick.Nick`
