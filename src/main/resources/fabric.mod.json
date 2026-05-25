@@ -1,0 +1,28 @@
+{
+	"schemaVersion": 1,
+	"id": "nick",
+	"version": "${version}",
+	"name": "Nick",
+	"description": "玩家昵称修改模组\n输入 /nick set <名称> 更改游戏内名称\n /nick reset 重置",
+	"authors": [
+		"dongchengqiao"
+	],
+	"contact": {},
+	"license": "MIT",
+	"icon": "assets/nick/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.dongchengqiao.nick.Nick"
+		]
+	},
+	"mixins": [
+		"nick.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.19.2",
+		"minecraft": ">=26.1",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}
