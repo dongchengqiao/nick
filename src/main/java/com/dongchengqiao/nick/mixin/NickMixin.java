@@ -1,7 +1,6 @@
 package com.dongchengqiao.nick.mixin;
 
 import com.dongchengqiao.nick.NickClientConfig;
-import com.dongchengqiao.nick.NickConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;

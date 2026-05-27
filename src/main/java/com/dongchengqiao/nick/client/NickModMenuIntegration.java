@@ -9,6 +9,6 @@ import net.fabricmc.api.Environment;
 public class NickModMenuIntegration implements ModMenuApi {
 	@Override
 	public ConfigScreenFactory<?> getModConfigScreenFactory() {
-		return NickConfigScreen::new;
+		return NickConfigScreen::create;
 	}
 }
