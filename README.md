@@ -69,8 +69,8 @@
 
 ```json
 {
-  "Player58": {"nick": "小明"},
-  "Steve": {"nick": "小红"}
+  "zxdnb": {"nick": "脏小豆"},
+  "dongchengqiao": {"nick": "董丞乔"}
 }
 ```
 
