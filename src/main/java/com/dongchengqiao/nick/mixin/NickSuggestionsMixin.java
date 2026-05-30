@@ -1,5 +1,6 @@
 package com.dongchengqiao.nick.mixin;
 
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
@@ -12,21 +13,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.List;
 
 @Mixin(PlayerList.class)
-public class PlayerListMixin {
+public class NickSuggestionsMixin {
 	@Shadow
 	private List<ServerPlayer> players;
 
-	@Inject(method = "getPlayerByName", at = @At("TAIL"), cancellable = true)
-	private void onGetPlayerByName(String name, CallbackInfoReturnable<ServerPlayer> cir) {
-		if (cir.getReturnValue() == null) {
-			for (ServerPlayer player : players) {
-				Component customName = player.getCustomName();
-				if (customName != null && customName.getString().equals(name)) {
-					cir.setReturnValue(player);
-					return;
-				}
+	@Inject(method = "getPlayerNamesArray", at = @At("HEAD"), cancellable = true)
+	private void onGetPlayerNamesArray(CallbackInfoReturnable<String[]> cir) {
+		String[] result = new String[players.size()];
+		for (int i = 0; i < players.size(); i++) {
+			ServerPlayer player = players.get(i);
+			Component customName = player.getCustomName();
+			if (customName != null) {
+				result[i] = customName.getString();
+			} else {
+				result[i] = player.getScoreboardName();
 			}
 		}
+		cir.setReturnValue(result);
 	}
-
 }

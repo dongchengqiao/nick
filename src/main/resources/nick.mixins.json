@@ -3,9 +3,16 @@
 	"package": "com.dongchengqiao.nick.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
+		"NickChatBroadcastMixin",
 		"NickMixin",
 		"NickTabListMixin",
+		"NickSelectorMixin",
+		"NickSuggestionsMixin",
 		"PlayerListMixin"
+	],
+	"client": [
+		"NickNameTagMixin",
+		"NickClientSuggestionsMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
