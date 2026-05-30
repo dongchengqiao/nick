@@ -1,5 +1,7 @@
 # Nick - 昵称模组
 
+[![Modrinth](https://img.shields.io/modrinth/dt/VtG7yP1S?label=Modrinth%20Downloads)](https://modrinth.com/mod/nick-mod)
+
 此模组由AI生成(opencode内的DeepSeek V4)
 
 一个 Fabric 服务端模组，允许玩家修改自己的显示名称（昵称），支持团队颜色、前缀/后缀，并可通过昵称查找玩家。
