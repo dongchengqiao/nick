@@ -6,17 +6,22 @@ import com.google.gson.JsonObject;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class NickClientConfig {
 	public enum DisplayMode {
-		NICK_ONLY("nick_only"),
-		NICK_AND_ORIGINAL("nick_and_original"),
-		HIDE("hide");
+		DEFAULT("default", "默认"),
+		NICK_ONLY("nick_only", "仅昵称"),
+		NICK_AND_ORIGINAL("nick_and_original", "昵称+MCID"),
+		HIDE("hide", "仅MCID");
 
 		private final String key;
+		private final String displayName;
 
-		DisplayMode(String key) {
+		DisplayMode(String key, String displayName) {
 			this.key = key;
+			this.displayName = displayName;
 		}
 
 		public static DisplayMode fromKey(String key) {
@@ -33,29 +38,64 @@ public class NickClientConfig {
 		}
 
 		public String getDisplayName() {
-			switch (this) {
-				case NICK_ONLY:
-					return "仅昵称";
-				case NICK_AND_ORIGINAL:
-					return "昵称+原名";
-				case HIDE:
-					return "隐藏";
-				default:
-					return key;
+			return displayName;
+		}
+
+		public DisplayMode resolve(DisplayMode fallback) {
+			return this == DEFAULT ? fallback : this;
+		}
+	}
+
+	public enum DisplayLocation {
+		NAMETAG("nametag", "\u5934\u9876"),
+		CHAT("chat", "\u804a\u5929"),
+		TARGET_SELECTOR("target_selector", "\u76ee\u6807\u9009\u62e9\u5668"),
+		TAB_LIST("tab_list", "Tab\u5217\u8868");
+
+		private final String key;
+		private final String displayName;
+
+		DisplayLocation(String key, String displayName) {
+			this.key = key;
+			this.displayName = displayName;
+		}
+
+		public String getKey() {
+			return key;
+		}
+
+		public String getDisplayName() {
+			return displayName;
+		}
+
+		public static DisplayLocation fromKey(String key) {
+			for (DisplayLocation loc : values()) {
+				if (loc.key.equals(key)) {
+					return loc;
+				}
 			}
+			return NAMETAG;
 		}
 	}
 
 	private static final Path CONFIG_PATH = Path.of("config/nick-client.json");
-	private static DisplayMode displayMode = DisplayMode.NICK_ONLY;
+	private static DisplayMode defaultMode = DisplayMode.NICK_ONLY;
+	private static final Map<DisplayLocation, DisplayMode> overrides = new LinkedHashMap<>();
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
 	public static void load() {
 		try {
 			if (Files.exists(CONFIG_PATH)) {
 				JsonObject obj = GSON.fromJson(Files.readString(CONFIG_PATH), JsonObject.class);
-				if (obj != null && obj.has("displayMode")) {
-					displayMode = DisplayMode.fromKey(obj.get("displayMode").getAsString());
+				if (obj != null) {
+					if (obj.has("default")) {
+						defaultMode = DisplayMode.fromKey(obj.get("default").getAsString());
+					}
+					for (DisplayLocation loc : DisplayLocation.values()) {
+						if (obj.has(loc.getKey())) {
+							overrides.put(loc, DisplayMode.fromKey(obj.get(loc.getKey()).getAsString()));
+						}
+					}
 				}
 			} else {
 				save();
@@ -65,12 +105,33 @@ public class NickClientConfig {
 		}
 	}
 
-	public static DisplayMode getDisplayMode() {
-		return displayMode;
+	public static DisplayMode getDefaultMode() {
+		return defaultMode;
 	}
 
-	public static void setDisplayMode(DisplayMode mode) {
-		displayMode = mode;
+	public static void setDefaultMode(DisplayMode mode) {
+		defaultMode = mode;
+		save();
+	}
+
+	public static DisplayMode getDisplayMode(DisplayLocation location) {
+		DisplayMode override = overrides.get(location);
+		if (override != null) {
+			return override.resolve(defaultMode);
+		}
+		return defaultMode;
+	}
+
+	public static DisplayMode getOverride(DisplayLocation location) {
+		return overrides.get(location);
+	}
+
+	public static void setOverride(DisplayLocation location, DisplayMode mode) {
+		if (mode == DisplayMode.DEFAULT) {
+			overrides.remove(location);
+		} else {
+			overrides.put(location, mode);
+		}
 		save();
 	}
 
@@ -78,7 +139,10 @@ public class NickClientConfig {
 		try {
 			Files.createDirectories(CONFIG_PATH.getParent());
 			JsonObject obj = new JsonObject();
-			obj.addProperty("displayMode", displayMode.getKey());
+			obj.addProperty("default", defaultMode.getKey());
+			for (Map.Entry<DisplayLocation, DisplayMode> entry : overrides.entrySet()) {
+				obj.addProperty(entry.getKey().getKey(), entry.getValue().getKey());
+			}
 			Files.writeString(CONFIG_PATH, GSON.toJson(obj));
 		} catch (Exception e) {
 			Nick.LOGGER.error("Failed to save nick client config", e);
