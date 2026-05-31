@@ -1,5 +1,7 @@
 # Nick - 昵称模组
 
+**中文** | [English](README_en.md) | [混合 mix](README_mix.md)
+
 [![Modrinth](https://img.shields.io/modrinth/dt/VtG7yP1S?label=Modrinth%20Downloads)](https://modrinth.com/mod/nick-mod)
 
 此模组由AI生成(opencode内的DeepSeek V4)
@@ -59,8 +61,8 @@
 
 客户端安装后自动生成 `config/nick-client.json`，可调整昵称的头顶名签显示方式：
 
-| 值                      | 效果               | 示例            |
-| ----------------------- | ------------------ |-----------------|
+| 值                      | 效果               | 示例              |
+| ----------------------- | ------------------ | ----------------- |
 | `"nick_only"`         | 仅显示昵称（默认） | `脏小豆`        |
 | `"nick_and_original"` | 昵称+原名          | `[脏小豆]zxdnb` |
 | `"hide"`              | 隐藏昵称，显示原名 | `zxdnb`         |
