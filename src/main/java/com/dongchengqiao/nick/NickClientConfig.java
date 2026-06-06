@@ -47,10 +47,10 @@ public class NickClientConfig {
 	}
 
 	public enum DisplayLocation {
-		NAMETAG("nametag", "\u5934\u9876"),
-		CHAT("chat", "\u804a\u5929"),
-		TARGET_SELECTOR("target_selector", "\u76ee\u6807\u9009\u62e9\u5668"),
-		TAB_LIST("tab_list", "Tab\u5217\u8868");
+		NAMETAG("nametag", "头顶"),
+		CHAT("chat", "聊天"),
+
+		TAB_LIST("tab_list", "Tab列表");
 
 		private final String key;
 		private final String displayName;

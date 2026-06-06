@@ -20,6 +20,6 @@ public abstract class NickTabListMixin {
 			return;
 		}
 		MutableComponent result = PlayerTeam.formatNameForTeam(player.getTeam(), customName);
-		cir.setReturnValue(((NickMixin)(Object)player).invokeDecorateDisplayNameComponent(result));
+		cir.setReturnValue(((PlayerMixin)(Object)player).invokeDecorateDisplayNameComponent(result));
 	}
 }

@@ -21,10 +21,9 @@ public class NickCommand {
 							setNick(player, nick);
 							ctx.getSource().sendSuccess(() -> Component.literal("§a昵称已设置为: " + nick), false);
 							return 1;
-						}))
-					.then(argument("target", EntityArgument.player())
-						.requires(hasPermission(LEVEL_MODERATORS))
-						.then(argument("name", StringArgumentType.string())
+						})
+						.then(argument("target", EntityArgument.player())
+							.requires(hasPermission(LEVEL_MODERATORS))
 							.executes(ctx -> {
 								ServerPlayer target = EntityArgument.getPlayer(ctx, "target");
 								String nick = StringArgumentType.getString(ctx, "name");
