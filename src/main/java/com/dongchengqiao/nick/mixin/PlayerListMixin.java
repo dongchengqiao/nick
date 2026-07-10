@@ -6,6 +6,7 @@ import net.minecraft.network.chat.OutgoingChatMessage;
 import net.minecraft.network.chat.PlayerChatMessage;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
+import net.minecraft.world.scores.PlayerTeam;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -73,7 +74,8 @@ public class PlayerListMixin {
 		if (sender != null) {
 			Component customName = sender.getCustomName();
 			if (customName != null) {
-				return new ChatType.Bound(bound.chatType(), customName, bound.targetName());
+				Component formatted = PlayerTeam.formatNameForTeam(sender.getTeam(), customName);
+				return new ChatType.Bound(bound.chatType(), formatted, bound.targetName());
 			}
 		}
 		return bound;
