@@ -32,14 +32,15 @@ public class NickNameTagMixin {
 			return null;
 		}
 		String nick = customName.getString();
+		String originalName = player.getGameProfile().name();
 		DisplayMode mode = NickClientConfig.getDisplayMode(DisplayLocation.NAMETAG);
 		Component display;
 		switch (mode) {
 			case HIDE:
-				display = Component.literal(player.getScoreboardName());
+				display = Component.literal(originalName);
 				break;
 			case NICK_AND_ORIGINAL:
-				display = Component.literal("[" + nick + "]" + player.getScoreboardName());
+				display = Component.literal("[" + nick + "]" + originalName);
 				break;
 			case NICK_ONLY:
 			default:

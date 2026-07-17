@@ -14,8 +14,8 @@ public abstract class PlayerMixin {
 	@Invoker("decorateDisplayNameComponent")
 	public abstract MutableComponent invokeDecorateDisplayNameComponent(MutableComponent base);
 
-	@Inject(method = "getPlainTextName", at = @At("HEAD"), cancellable = true)
-	private void onGetPlainTextName(CallbackInfoReturnable<String> cir) {
+	@Inject(method = "getScoreboardName", at = @At("HEAD"), cancellable = true)
+	private void onGetScoreboardName(CallbackInfoReturnable<String> cir) {
 		Component customName = ((Player)(Object)this).getCustomName();
 		if (customName != null) {
 			cir.setReturnValue(customName.getString());

@@ -11,17 +11,15 @@ import java.util.Map;
 
 public class NickClientConfig {
 	public enum DisplayMode {
-		DEFAULT("default", "默认"),
-		NICK_ONLY("nick_only", "仅昵称"),
-		NICK_AND_ORIGINAL("nick_and_original", "昵称+MCID"),
-		HIDE("hide", "仅MCID");
+		DEFAULT("default"),
+		NICK_ONLY("nick_only"),
+		NICK_AND_ORIGINAL("nick_and_original"),
+		HIDE("hide");
 
 		private final String key;
-		private final String displayName;
 
-		DisplayMode(String key, String displayName) {
+		DisplayMode(String key) {
 			this.key = key;
-			this.displayName = displayName;
 		}
 
 		public static DisplayMode fromKey(String key) {
@@ -37,8 +35,8 @@ public class NickClientConfig {
 			return key;
 		}
 
-		public String getDisplayName() {
-			return displayName;
+		public String getTranslationKey() {
+			return "nick.display_mode." + key;
 		}
 
 		public DisplayMode resolve(DisplayMode fallback) {
@@ -47,25 +45,22 @@ public class NickClientConfig {
 	}
 
 	public enum DisplayLocation {
-		NAMETAG("nametag", "头顶"),
-		CHAT("chat", "聊天"),
-
-		TAB_LIST("tab_list", "Tab列表");
+		NAMETAG("nametag"),
+		CHAT("chat"),
+		TAB_LIST("tab_list");
 
 		private final String key;
-		private final String displayName;
 
-		DisplayLocation(String key, String displayName) {
+		DisplayLocation(String key) {
 			this.key = key;
-			this.displayName = displayName;
 		}
 
 		public String getKey() {
 			return key;
 		}
 
-		public String getDisplayName() {
-			return displayName;
+		public String getTranslationKey() {
+			return "nick.display_location." + key;
 		}
 
 		public static DisplayLocation fromKey(String key) {

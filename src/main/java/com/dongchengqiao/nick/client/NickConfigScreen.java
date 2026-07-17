@@ -16,38 +16,38 @@ public class NickConfigScreen {
 	public static Screen create(Screen parent) {
 		ConfigBuilder builder = ConfigBuilder.create()
 			.setParentScreen(parent)
-			.setTitle(Component.literal("Nick 配置"));
+			.setTitle(Component.translatable("nick.config.title"));
 
 		ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
 		ConfigCategory category = builder.getOrCreateCategory(
-			Component.literal("显示设置"));
+			Component.translatable("nick.config.category.display"));
 		category.addEntry(entryBuilder.startTextDescription(
-			Component.literal("§7目标选择器（如@e[name=...]）不会跟随客户端设置而更改")
+			Component.translatable("nick.config.description.selector_note")
 		).build());
 		category.addEntry(entryBuilder
 			.startSelector(
-				Component.literal("默认显示模式"),
+				Component.translatable("nick.config.default_mode"),
 				new DisplayMode[]{DisplayMode.NICK_ONLY, DisplayMode.NICK_AND_ORIGINAL, DisplayMode.HIDE},
 				NickClientConfig.getDefaultMode()
 			)
 			.setDefaultValue(DisplayMode.NICK_ONLY)
 			.setSaveConsumer(NickClientConfig::setDefaultMode)
-			.setNameProvider(m -> Component.literal(((DisplayMode) m).getDisplayName()))
+			.setNameProvider(m -> Component.translatable(((DisplayMode) m).getTranslationKey()))
 			.build());
 
-		var subCategory = entryBuilder.startSubCategory(Component.literal("位置显示设置"));
+		var subCategory = entryBuilder.startSubCategory(Component.translatable("nick.config.location_settings"));
 		for (DisplayLocation loc : DisplayLocation.values()) {
 			DisplayMode current = NickClientConfig.getOverride(loc);
 			subCategory.add(entryBuilder
 				.startEnumSelector(
-					Component.literal(loc.getDisplayName()),
+					Component.translatable(loc.getTranslationKey()),
 					DisplayMode.class,
 					current != null ? current : DisplayMode.DEFAULT
 				)
 				.setDefaultValue(DisplayMode.DEFAULT)
 				.setSaveConsumer(mode -> NickClientConfig.setOverride(loc, mode))
-				.setEnumNameProvider(m -> Component.literal(((DisplayMode) m).getDisplayName()))
+				.setEnumNameProvider(m -> Component.translatable(((DisplayMode) m).getTranslationKey()))
 				.build());
 		}
 		category.addEntry(subCategory.build());
