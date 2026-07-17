@@ -1,0 +1,15 @@
+{
+	"nick.cant_spawn_chinese_name": "Não é possível gerar um fake player com nome chinês",
+	"nick.display_mode.default": "Padrão",
+	"nick.display_mode.nick_only": "Apenas Apelido",
+	"nick.display_mode.nick_and_original": "Apelido+MCID",
+	"nick.display_mode.hide": "Apenas MCID",
+	"nick.display_location.nametag": "Sobre a cabeça",
+	"nick.display_location.chat": "Chat",
+	"nick.display_location.tab_list": "Lista de jogadores",
+	"nick.config.title": "Configuração do Nick",
+	"nick.config.category.display": "Configurações de exibição",
+	"nick.config.description.selector_note": "§7Seletores de alvo (ex: @e[name=...]) não são afetados pelas configurações do cliente",
+	"nick.config.default_mode": "Modo de exibição padrão",
+	"nick.config.location_settings": "Configurações de exibição por local"
+}

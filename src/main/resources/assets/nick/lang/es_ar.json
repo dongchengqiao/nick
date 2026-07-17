@@ -1,0 +1,15 @@
+{
+	"nick.cant_spawn_chinese_name": "No se puede generar un fake player con nombre chino",
+	"nick.display_mode.default": "Por defecto",
+	"nick.display_mode.nick_only": "Solo Nick",
+	"nick.display_mode.nick_and_original": "Nick+MCID",
+	"nick.display_mode.hide": "Solo MCID",
+	"nick.display_location.nametag": "Sobre la cabeza",
+	"nick.display_location.chat": "Chat",
+	"nick.display_location.tab_list": "Lista de jugadores",
+	"nick.config.title": "Configuración de Nick",
+	"nick.config.category.display": "Configuración de pantalla",
+	"nick.config.description.selector_note": "§7Los selectores de objetivo (ej. @e[name=...]) no se ven afectados por la configuración del cliente",
+	"nick.config.default_mode": "Modo de pantalla predeterminado",
+	"nick.config.location_settings": "Configuración de pantalla por ubicación"
+}

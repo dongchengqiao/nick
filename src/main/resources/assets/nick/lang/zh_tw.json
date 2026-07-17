@@ -1,0 +1,15 @@
+{
+	"nick.cant_spawn_chinese_name": "無法使用中文名稱生成假人",
+	"nick.display_mode.default": "預設",
+	"nick.display_mode.nick_only": "僅暱稱",
+	"nick.display_mode.nick_and_original": "暱稱+MCID",
+	"nick.display_mode.hide": "僅MCID",
+	"nick.display_location.nametag": "頭頂",
+	"nick.display_location.chat": "聊天",
+	"nick.display_location.tab_list": "Tab列表",
+	"nick.config.title": "Nick 設定",
+	"nick.config.category.display": "顯示設定",
+	"nick.config.description.selector_note": "§7目標選擇器（如@e[name=...]）不會跟隨客戶端設定而更改",
+	"nick.config.default_mode": "預設顯示模式",
+	"nick.config.location_settings": "位置顯示設定"
+}

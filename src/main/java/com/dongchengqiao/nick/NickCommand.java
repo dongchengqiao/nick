@@ -19,7 +19,7 @@ public class NickCommand {
 						ServerPlayer player = ctx.getSource().getPlayerOrException();
 						String nick = ctx.getArgument("name", String.class);
 						setNick(player, nick);
-						ctx.getSource().sendSuccess(() -> Component.literal("§a昵称已设置为: " + nick), false);
+						ctx.getSource().sendSuccess(() -> Component.translatable("nick.command.set", nick), false);
 						return 1;
 					})
 					.then(argument("target", EntityArgument.player())
@@ -28,14 +28,14 @@ public class NickCommand {
 							ServerPlayer target = EntityArgument.getPlayer(ctx, "target");
 							String nick = ctx.getArgument("name", String.class);
 							setNick(target, nick);
-							ctx.getSource().sendSuccess(() -> Component.literal("§a已设置 " + target.getScoreboardName() + " 的昵称为: " + nick), false);
+							ctx.getSource().sendSuccess(() -> Component.translatable("nick.command.set.other", target.getScoreboardName(), nick), false);
 							return 1;
 						}))))
 			.then(literal("reset")
 				.executes(ctx -> {
 					ServerPlayer player = ctx.getSource().getPlayerOrException();
 					resetNick(player);
-					ctx.getSource().sendSuccess(() -> Component.literal("§a昵称已重置"), false);
+					ctx.getSource().sendSuccess(() -> Component.translatable("nick.command.reset"), false);
 					return 1;
 				})
 				.then(argument("target", EntityArgument.player())
@@ -43,7 +43,7 @@ public class NickCommand {
 					.executes(ctx -> {
 						ServerPlayer target = EntityArgument.getPlayer(ctx, "target");
 						resetNick(target);
-						ctx.getSource().sendSuccess(() -> Component.literal("§a已重置 " + target.getScoreboardName() + " 的昵称"), false);
+						ctx.getSource().sendSuccess(() -> Component.translatable("nick.command.reset.other", target.getScoreboardName()), false);
 						return 1;
 					})))
 		);

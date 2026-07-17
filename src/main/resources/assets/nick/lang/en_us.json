@@ -1,0 +1,15 @@
+{
+	"nick.cant_spawn_chinese_name": "Cannot spawn fake player with Chinese name",
+	"nick.display_mode.default": "Default",
+	"nick.display_mode.nick_only": "Nick Only",
+	"nick.display_mode.nick_and_original": "Nick+MCID",
+	"nick.display_mode.hide": "MCID Only",
+	"nick.display_location.nametag": "Nametag",
+	"nick.display_location.chat": "Chat",
+	"nick.display_location.tab_list": "Tab List",
+	"nick.config.title": "Nick Config",
+	"nick.config.category.display": "Display Settings",
+	"nick.config.description.selector_note": "§7Target selectors are not affected by client settings",
+	"nick.config.default_mode": "Default Display Mode",
+	"nick.config.location_settings": "Location Display Settings"
+}
