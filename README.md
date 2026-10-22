@@ -1,75 +1,72 @@
 # Nick - 昵称模组
 
-**中文** | [English](README_en.md) | [混合 mix](README_mix.md)
+**中文** | [English](README_en.md)
 
-[![Modrinth](https://img.shields.io/modrinth/dt/VtG7yP1S?label=Modrinth%20Downloads)](https://modrinth.com/mod/nick-mod)
+一个基于 Carpet 的 Fabric 昵称模组，支持中文/Unicode昵称、多语言翻译、Carpet规则实时切换。
 
-此模组由AI生成(opencode内的DeepSeek V4)
+## 前置
 
-一个 Fabric 服务端模组，允许玩家修改自己的显示名称（昵称），支持团队颜色、前缀/后缀，并可通过昵称查找玩家。
+- Fabric Loader ≥0.19.2
+- Fabric API ≥0.149.0+26.1.2
+- **Carpet** (任何版本)
 
 ## 命令
 
-### 设置昵称
-
 | 命令                        | 权限   | 说明           |
 | --------------------------- | ------ | -------------- |
-| `/nick set <昵称>`        | 所有人 | 设置自己的昵称 |
-| `/nick set <目标> <昵称>` | OP     | 设置他人的昵称 |
-| `/nick reset`             | 所有人 | 重置自己的昵称 |
-| `/nick reset <目标>`      | OP     | 重置他人的昵称 |
+| `/nick set <昵称>`          | 所有人 | 设置自己的昵称 |
+| `/nick set <目标> <昵称>`   | OP     | 设置他人的昵称 |
+| `/nick reset`               | 所有人 | 重置自己的昵称 |
+| `/nick reset <目标>`        | OP     | 重置他人的昵称 |
 
-`<目标>` 支持玩家名、`@p`、`@a`、`@r`、`@s` 等选择器。
+- 昵称直接填写即可，无需引号，支持中文/日文/韩文等Unicode字符
+- `<目标>` 支持玩家名、选择器
 
-### 昵称查找
+## Carpet 规则
 
-设置昵称后，所有命令皆可用昵称替代玩家名，例如：
+| 规则                    | 默认值  | 说明                              |
+| ----------------------- | ------- | --------------------------------- |
+| `commandNick`           | `true`  | 启用/禁用 `/nick` 命令            |
+| `commandPlayerCN`       | `true`  | 允许 `/player` 使用中文假人名     |
+| `commandPlayerCNNoSpawn`| `true`  | `/player` 中文假人名不生成实体    |
 
-- `/tp 小明`
-- `/msg 小明`
-- `/kick 小明`
-
-**注意**：若昵称与真实玩家名同时存在，玩家名优先匹配。
-
-### 昵称格式
-
-- 单个词直接写：`/nick set 小明`
-- 带空格的昵称用引号：`/nick set "小明 同学"`
-- 会显示队伍的团队颜色、前缀和后缀
+- 使用 `/nick` 命令需要 `commandNick = true`
+- `commandPlayerCN` 开启后 `/player spawn 小明` 可直接使用中文
+- 规则即时生效，无需重启
 
 ## 效果
 
-- ✅ 聊天消息显示昵称
+- ✅ 聊天消息显示昵称（所有客户端可见）
 - ✅ Tab 列表显示昵称
-- ✅ 头顶名签显示昵称（单人模式）/ 需客户端装模组（服务器模式）
-- ✅ 支持客户端三种显示模式：仅昵称、昵称+原名、隐藏
-- ✅ 团队颜色生效
+- ✅ **头顶名签显示昵称（服务端原生，无需客户端安装）**
 - ✅ 昵称查找玩家
+- ✅ 支持中文/Unicode
+- ✅ 客户端可选安装，提供三种显示模式
 
 ## 安装
 
 ### 服务端
 
-1. 将 `nick-*.jar` 放入 `mods/` 目录
+1. 放入 `mods/`（需要 `fabric-carpet-*.jar`）
 2. 重启服务器
 
 ### 客户端（可选）
 
-客户端安装后，头顶名签可在服务器模式下显示昵称，并可通过客户端配置调整显示方式。不装则仅聊天和 Tab 列表生效。
+安装后可用 ModMenu 配置显示模式（仅昵称 / 昵称+MCID / 仅MCID），不安装则所有昵称效果仍完全可见。
 
 ## 客户端配置
 
-客户端安装后自动生成 `config/nick-client.json`，可调整昵称的头顶名签显示方式：
+按 `ModMenu` → `Nick` 进入配置界面，可分别设置头顶、聊天、Tab列表的显示方式：
 
-| 值                      | 效果               | 示例              |
+| 模式                    | 效果               | 示例              |
 | ----------------------- | ------------------ | ----------------- |
-| `"nick_only"`         | 仅显示昵称（默认） | `脏小豆`        |
-| `"nick_and_original"` | 昵称+原名          | `[脏小豆]zxdnb` |
-| `"hide"`              | 隐藏昵称，显示原名 | `zxdnb`         |
+| `nick_only`             | 仅显示昵称（默认） | `脏小豆`          |
+| `nick_and_original`     | 昵称+MCID          | `[脏小豆]zxdnb`   |
+| `hide`                  | 隐藏昵称，显示原名 | `zxdnb`           |
 
 ## 配置文件
 
-`config/nick.json`，格式示例：
+`config/nick.json`：
 
 ```json
 {
@@ -82,5 +79,5 @@
 
 - Minecraft 版本：26.1
 - 框架：Fabric Loader 0.19.2 / Fabric API 0.149.0+26.1.2
-- Maven 组：`com.dongchengqiao.nick`
+- 硬依赖：Carpet（翻译、规则系统）
 - 主类：`com.dongchengqiao.nick.Nick`

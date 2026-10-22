@@ -6,6 +6,7 @@
 		"NickCarpetPlayerCommandMixin",
 		"NickEntityMixin",
 		"NickEntitySelectorParserMixin",
+		"NickGameProfileArgumentMixin",
 		"NickStringReaderMixin",
 		"NickTabListMixin",
 		"PlayerListMixin",
@@ -15,7 +16,8 @@
 		"NickClientChatMixin",
 		"NickClientTabListMixin",
 		"NickNameTagMixin",
-		"NickClientSuggestionsMixin"
+		"NickClientSuggestionsMixin",
+		"PlayerInfoAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1

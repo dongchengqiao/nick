@@ -3,9 +3,9 @@ package com.dongchengqiao.nick.mixin;
 import com.dongchengqiao.nick.NickClientConfig;
 import com.dongchengqiao.nick.NickClientConfig.DisplayLocation;
 import com.dongchengqiao.nick.NickClientConfig.DisplayMode;
+import com.dongchengqiao.nick.client.NickClientUtil;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.scores.PlayerTeam;
@@ -27,25 +27,31 @@ public class NickNameTagMixin {
 	}
 
 	private static Component buildDisplay(Player player) {
-		Component customName = player.getCustomName();
-		if (customName == null) {
+		DisplayMode mode = NickClientConfig.getDisplayMode(DisplayLocation.NAMETAG);
+		if (mode == DisplayMode.DEFAULT) {
 			return null;
 		}
-		String nick = customName.getString();
 		String originalName = player.getGameProfile().name();
-		DisplayMode mode = NickClientConfig.getDisplayMode(DisplayLocation.NAMETAG);
+		String nick = NickClientUtil.getNickname(player);
 		Component display;
 		switch (mode) {
 			case HIDE:
 				display = Component.literal(originalName);
 				break;
 			case NICK_AND_ORIGINAL:
+				if (nick == null) {
+					return null;
+				}
 				display = Component.literal("[" + nick + "]" + originalName);
 				break;
 			case NICK_ONLY:
-			default:
+				if (nick == null) {
+					return null;
+				}
 				display = Component.literal(nick);
 				break;
+			default:
+				return null;
 		}
 		return PlayerTeam.formatNameForTeam(player.getTeam(), display);
 	}

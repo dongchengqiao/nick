@@ -2,6 +2,8 @@ package com.dongchengqiao.nick;
 
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;
+import carpet.utils.Translations;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundPlayerInfoUpdatePacket;
@@ -14,12 +16,12 @@ public class NickCommand {
 		dispatcher.register(literal("nick")
 			.requires(src -> NickSettings.commandNick)
 			.then(literal("set")
-				.then(argument("name", UnicodeWordArgumentType.unicodeWord())
+				.then(argument("name", StringArgumentType.string())
 					.executes(ctx -> {
 						ServerPlayer player = ctx.getSource().getPlayerOrException();
 						String nick = ctx.getArgument("name", String.class);
 						setNick(player, nick);
-						ctx.getSource().sendSuccess(() -> Component.translatable("nick.command.set", nick), false);
+						ctx.getSource().sendSuccess(() -> Component.literal(Translations.tr("nick.command.set").formatted(nick)), false);
 						return 1;
 					})
 					.then(argument("target", EntityArgument.player())
@@ -28,14 +30,14 @@ public class NickCommand {
 							ServerPlayer target = EntityArgument.getPlayer(ctx, "target");
 							String nick = ctx.getArgument("name", String.class);
 							setNick(target, nick);
-							ctx.getSource().sendSuccess(() -> Component.translatable("nick.command.set.other", target.getScoreboardName(), nick), false);
+							ctx.getSource().sendSuccess(() -> Component.literal(Translations.tr("nick.command.set.other").formatted(target.getScoreboardName(), nick)), false);
 							return 1;
 						}))))
 			.then(literal("reset")
 				.executes(ctx -> {
 					ServerPlayer player = ctx.getSource().getPlayerOrException();
 					resetNick(player);
-					ctx.getSource().sendSuccess(() -> Component.translatable("nick.command.reset"), false);
+					ctx.getSource().sendSuccess(() -> Component.literal(Translations.tr("nick.command.reset")), false);
 					return 1;
 				})
 				.then(argument("target", EntityArgument.player())
@@ -43,7 +45,7 @@ public class NickCommand {
 					.executes(ctx -> {
 						ServerPlayer target = EntityArgument.getPlayer(ctx, "target");
 						resetNick(target);
-						ctx.getSource().sendSuccess(() -> Component.translatable("nick.command.reset.other", target.getScoreboardName()), false);
+						ctx.getSource().sendSuccess(() -> Component.literal(Translations.tr("nick.command.reset.other").formatted(target.getScoreboardName())), false);
 						return 1;
 					})))
 		);

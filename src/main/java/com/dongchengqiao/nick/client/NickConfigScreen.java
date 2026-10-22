@@ -16,7 +16,8 @@ public class NickConfigScreen {
 	public static Screen create(Screen parent) {
 		ConfigBuilder builder = ConfigBuilder.create()
 			.setParentScreen(parent)
-			.setTitle(Component.translatable("nick.config.title"));
+			.setTitle(Component.translatable("nick.config.title"))
+			.setSavingRunnable(NickClientConfig::save);
 
 		ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 

@@ -1,0 +1,12 @@
+package com.dongchengqiao.nick.mixin;
+
+import net.minecraft.client.multiplayer.PlayerInfo;
+import net.minecraft.network.chat.Component;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
+
+@Mixin(PlayerInfo.class)
+public interface PlayerInfoAccessor {
+	@Accessor("tabListDisplayName")
+	Component nick$getRawTabListDisplayName();
+}

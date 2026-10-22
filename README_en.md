@@ -1,84 +1,67 @@
 # Nick - Nickname Mod
 
-[中文](README.md) | **English** | [混合 mix](README_mix.md)
+[中文](README.md) | **English**
 
-[![Modrinth](https://img.shields.io/modrinth/dt/VtG7yP1S?label=Modrinth%20Downloads)](https://modrinth.com/mod/nick-mod)
+A Carpet-based Fabric nickname mod supporting Unicode names, multi-language translations, and real-time rule toggling.
 
-> This mod is AI-generated (DeepSeek V4 via opencode)
+## Dependencies
 
-A Fabric server-side mod that allows players to change their display name (nickname), supports team colors, prefixes/suffixes, and allows player lookup by nickname.
+- Fabric Loader ≥0.19.2
+- Fabric API ≥0.149.0+26.1.2
+- **Carpet** (any version)
 
 ## Commands
 
-### Set Nickname
-
-| Command                           | Permission | Description                     |
-| --------------------------------- | ---------- | ------------------------------- |
-| `/nick set <nickname>`          | Everyone   | Set your own nickname           |
-| `/nick set <target> <nickname>` | OP         | Set another player's nickname   |
-| `/nick reset`                   | Everyone   | Reset your own nickname         |
+| Command                           | Permission | Description                   |
+| --------------------------------- | ---------- | ----------------------------- |
+| `/nick set <nickname>`          | Everyone   | Set your own nickname         |
+| `/nick set <target> <nickname>` | OP         | Set another player's nickname |
+| `/nick reset`                   | Everyone   | Reset your own nickname       |
 | `/nick reset <target>`          | OP         | Reset another player's nickname |
 
-`<target>` supports player names, `@p`, `@a`, `@r`, `@s` and other selectors.
+- Unicode names (Chinese, Japanese, Korean, etc.) work without quotes
+- `<target>` supports player names and selectors
 
-### Nickname Lookup
+## Carpet Rules
 
-Once a nickname is set, all commands can use the nickname in place of the player name, e.g.:
+| Rule                   | Default | Description                              |
+| ---------------------- | ------- | ---------------------------------------- |
+| `commandNick`          | `true`  | Enable/disable `/nick` command           |
+| `commandPlayerCN`      | `true`  | Allow Chinese names in `/player` command |
+| `commandPlayerCNNoSpawn` | `true`| `/player` Chinese names don't spawn entity |
 
-- `/tp Xiaoming`
-- `/msg Xiaoming`
-- `/kick Xiaoming`
-
-**Note**: If a nickname and a real player name are identical, the real name takes priority.
-
-### Nickname Format
-
-- Single word: `/nick set Xiaoming`
-- Nickname with spaces, use quotes: `/nick set "Xiao Ming"`
-- Displays team color, prefix, and suffix when applicable
+- `/nick` requires `commandNick = true`
+- Rules take effect immediately, no restart needed
 
 ## Features
 
-- ✅ Chat messages display nickname
-- ✅ Tab list displays nickname (all clients, no mod required)
-- ✅ Name tag displays nickname (singleplayer) / requires client mod (server mode)
-- ✅ Per-location client display modes: default, nickname only, nickname+original, hide
-- ✅ Team colors apply
-- ✅ Lookup players by nickname (`/tp`, `/msg`, `/kick`, `@e[name=nickname]`, tab-completion)
-- ✅ Server console/logs show original MCID (MCDR compatible)
-- ✅ MCDR compatibility: command output and system messages always use original MCID
+- ✅ Chat messages display nickname (visible to all clients)
+- ✅ Tab list displays nickname
+- ✅ **Name tag displays nickname (server-side, no client mod required)**
+- ✅ Player lookup by nickname
+- ✅ Unicode support
+- ✅ Optional client mod with three display modes
 
 ## Installation
 
 ### Server
 
-1. Place `nick-*.jar` into the `mods/` directory
+1. Place `nick-*.jar` into `mods/` (requires `fabric-carpet-*.jar`)
 2. Restart the server
 
 ### Client (Optional)
 
-When installed on the client, name tags display nicknames in server mode, and the client configuration screen becomes available to customize display per location. Without the client mod, chat and tab list still show nicknames.
+When installed, use ModMenu to configure display modes per location (nickname only / nickname+MCID / MCID only). Without the client mod, all nickname effects are still fully visible.
 
 ## Client Configuration
 
-When the client mod is installed, `config/nick-client.json` is auto-generated. It supports a hierarchical display configuration: a global default mode plus per-location overrides.
+Open `ModMenu` → `Nick` to configure per-location display:
 
-### Display Modes
-
-| Mode                    | Effect                       | Example              |
-| ----------------------- | ---------------------------- | -------------------- |
-| `"nick_only"`         | Show nickname only (default) | `Xiao Ming`        |
-| `"nick_and_original"` | Nickname + original name     | `[Xiao Ming]zxdnb` |
-| `"hide"`              | Hide nickname, show original | `zxdnb`            |
-
-### Locations
-
-| Location            | Effect                        |
-| ------------------- | ----------------------------- |
-| `NAMETAG`         | Overhead name tag display     |
-| `CHAT`            | Chat message sender display   |
-| `TARGET_SELECTOR` | Selector resolution display   |
-| `TAB_LIST`        | Tab list player entry display |
+| Mode                   | Effect                      | Example              |
+| ---------------------- | --------------------------- | -------------------- |
+| `nick_only`            | Show nickname only (default)| `Xiao Ming`          |
+| `nick_and_original`    | Nickname + MCID             | `[Xiao Ming]zxdnb`   |
+| `hide`                 | Show original name only     | `zxdnb`              |
 
 ## Server Config
 
@@ -86,8 +69,8 @@ When the client mod is installed, `config/nick-client.json` is auto-generated. I
 
 ```json
 {
-  "zxdnb": {"nick": "Xiao Ming"},
-  "dongchengqiao": {"nick": "Dong Chengqiao"}
+  "zxdnb": {"nick": "UBB owner"},
+  "dongchengqiao": {"nick": "mod owner"}
 }
 ```
 
@@ -95,5 +78,5 @@ When the client mod is installed, `config/nick-client.json` is auto-generated. I
 
 - Minecraft version: 26.1
 - Framework: Fabric Loader 0.19.2 / Fabric API 0.149.0+26.1.2
-- Maven group: `com.dongchengqiao.nick`
+- Hard dependency: Carpet (translation & rule system)
 - Main class: `com.dongchengqiao.nick.Nick`

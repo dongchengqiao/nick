@@ -129,7 +129,6 @@ public class NickExtension implements CarpetExtension {
 			);
 		};
 	}
-
 	@Override
 	public String version() {
 		return "nick";

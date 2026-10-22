@@ -1,6 +1,7 @@
 package com.dongchengqiao.nick.mixin;
 
 import com.dongchengqiao.nick.NickClientConfig;
+import com.dongchengqiao.nick.client.NickClientUtil;
 import com.dongchengqiao.nick.NickClientConfig.DisplayLocation;
 import com.dongchengqiao.nick.NickClientConfig.DisplayMode;
 import net.minecraft.ChatFormatting;
@@ -11,7 +12,6 @@ import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.game.ClientboundPlayerChatPacket;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.scores.PlayerTeam;
 import net.minecraft.world.scores.Scoreboard;
 import org.spongepowered.asm.mixin.Mixin;
@@ -56,13 +56,13 @@ public class NickClientChatMixin {
 				displayName = Component.literal(originalName);
 				break;
 			case NICK_ONLY: {
-				String nickname = findNicknameByPlayerInfo(info);
+				String nickname = NickClientUtil.getNicknameByUuid(info.getProfile().id());
 				if (nickname == null) return bound;
 				displayName = Component.literal(nickname);
 				break;
 			}
 			case NICK_AND_ORIGINAL: {
-				String nickname = findNicknameByPlayerInfo(info);
+				String nickname = NickClientUtil.getNicknameByUuid(info.getProfile().id());
 				if (nickname == null) return bound;
 				displayName = Component.literal("[" + nickname + "]" + originalName);
 				break;
@@ -97,18 +97,6 @@ public class NickClientChatMixin {
 			result.append(suffix);
 		}
 		return result;
-	}
-
-	private static String findNicknameByPlayerInfo(PlayerInfo info) {
-		Minecraft mc = Minecraft.getInstance();
-		if (mc.level == null) return null;
-		for (Player player : mc.level.players()) {
-			if (player.getUUID().equals(info.getProfile().id())) {
-				Component customName = player.getCustomName();
-				return customName != null ? customName.getString() : null;
-			}
-		}
-		return null;
 	}
 
 	private static PlayerTeam getTeamForPlayer(String playerName) {

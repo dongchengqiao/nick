@@ -3,6 +3,7 @@ package com.dongchengqiao.nick;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import net.fabricmc.loader.api.FabricLoader;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -73,7 +74,7 @@ public class NickClientConfig {
 		}
 	}
 
-	private static final Path CONFIG_PATH = Path.of("config/nick-client.json");
+	private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("nick-client.json");
 	private static DisplayMode defaultMode = DisplayMode.NICK_ONLY;
 	private static final Map<DisplayLocation, DisplayMode> overrides = new LinkedHashMap<>();
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
