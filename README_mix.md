@@ -34,9 +34,9 @@ A Carpet-based Fabric nickname mod supporting Unicode names, multi-language tran
 
 | 规则 Rule               | 默认 Default | 说明 Description                                     |
 | ----------------------- | ------------ | ----------------------------------------------------- |
-| `commandNick`           | `true`       | 启用/禁用 `/nick` 命令  Toggle `/nick` command        |
-| `commandPlayerCN`       | `true`       | 允许 `/player` 使用中文假名 Allow Chinese player names |
-| `commandPlayerCNNoSpawn`| `true`       | `/player` 中文假名不生成实体 Don't spawn entity         |
+| `commandNick`             | `false`      | 启用/禁用 `/nick` 命令  Toggle `/nick` command                     |
+| `unicodeArgumentsSupport` | `false`      | 允许命令参数使用非ASCII字符 Allow non-ASCII command arguments      |
+| `commandPlayerCNNoSpawn`  | `false`      | `/player` 中文假名不生成实体 Don't spawn entity                    |
 
 - `/nick` 需要 `commandNick = true`
 - 规则即时生效，无需重启 Rules take effect immediately

@@ -26,12 +26,12 @@
 
 | 规则                    | 默认值  | 说明                              |
 | ----------------------- | ------- | --------------------------------- |
-| `commandNick`           | `true`  | 启用/禁用 `/nick` 命令            |
-| `commandPlayerCN`       | `true`  | 允许 `/player` 使用中文假人名     |
-| `commandPlayerCNNoSpawn`| `true`  | `/player` 中文假人名不生成实体    |
+| `commandNick`              | `false` | 启用/禁用 `/nick` 命令                        |
+| `unicodeArgumentsSupport`  | `false` | 允许命令参数使用非ASCII字符（中文、日文、韩文等） |
+| `commandPlayerCNNoSpawn`   | `false` | `/player` 中文假人名不生成实体                |
 
 - 使用 `/nick` 命令需要 `commandNick = true`
-- `commandPlayerCN` 开启后 `/player spawn 小明` 可直接使用中文
+- `unicodeArgumentsSupport` 开启后 `/player spawn 小明` 等命令参数可直接使用中文
 - 规则即时生效，无需重启
 
 ## 效果

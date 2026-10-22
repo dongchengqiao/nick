@@ -26,11 +26,12 @@ A Carpet-based Fabric nickname mod supporting Unicode names, multi-language tran
 
 | Rule                   | Default | Description                              |
 | ---------------------- | ------- | ---------------------------------------- |
-| `commandNick`          | `true`  | Enable/disable `/nick` command           |
-| `commandPlayerCN`      | `true`  | Allow Chinese names in `/player` command |
-| `commandPlayerCNNoSpawn` | `true`| `/player` Chinese names don't spawn entity |
+| `commandNick`             | `false` | Enable/disable `/nick` command                          |
+| `unicodeArgumentsSupport` | `false` | Allow non-ASCII characters (Chinese, Japanese, Korean, etc.) in command arguments |
+| `commandPlayerCNNoSpawn`  | `false` | `/player` Chinese names don't spawn entity              |
 
 - `/nick` requires `commandNick = true`
+- With `unicodeArgumentsSupport`, commands like `/player spawn 小明` accept Unicode arguments
 - Rules take effect immediately, no restart needed
 
 ## Features

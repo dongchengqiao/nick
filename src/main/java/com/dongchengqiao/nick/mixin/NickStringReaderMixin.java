@@ -9,10 +9,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(StringReader.class)
 public class NickStringReaderMixin {
-	@Inject(method = "isAllowedInUnquotedString", at = @At("RETURN"), cancellable = true)
+	@Inject(method = "isAllowedInUnquotedString", at = @At("RETURN"), cancellable = true, remap = false)
 	private static void allowUnicodeInUnquotedString(char c, CallbackInfoReturnable<Boolean> cir) {
-		if (!cir.getReturnValue() && NickSettings.commandPlayerCN && c > 127) {
-			cir.setReturnValue(true);
+		if (NickSettings.unicodeArgumentsSupport) {
+			cir.setReturnValue(cir.getReturnValueZ() || Character.isLetterOrDigit(c) || c > 0x7F);
 		}
 	}
 }

@@ -9,7 +9,7 @@ public class NickSettings {
 	public static boolean commandNick = false;
 
 	@Rule(categories = NICK)
-	public static boolean commandPlayerCN = false;
+	public static boolean unicodeArgumentsSupport = false;
 
 	@Rule(categories = NICK)
 	public static boolean commandPlayerCNNoSpawn = false;
