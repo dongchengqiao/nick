@@ -9,9 +9,13 @@ on:
   push:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-24.04
+    timeout-minutes: 30
     steps:
       - name: checkout repository
         uses: actions/checkout@v6
@@ -27,10 +31,34 @@ jobs:
       - name: read mod version
         id: version
         run: echo "value=$(sed -n 's/^mod_version=//p' gradle.properties)" >> "$GITHUB_OUTPUT"
+      - name: setup gradle
+        uses: gradle/actions/setup-gradle@v6
       - name: build
-        run: ./gradlew build
+        timeout-minutes: 25
+        run: |
+          set +e
+          for attempt in 1 2 3; do
+            echo "::group::Gradle build attempt $attempt"
+            timeout 600 ./gradlew build --no-daemon --console=plain --stacktrace \
+              -Dorg.gradle.internal.http.connectionTimeout=30000 \
+              -Dorg.gradle.internal.http.socketTimeout=60000
+            status=$?
+            echo "::endgroup::"
+            if [ "$status" -eq 0 ]; then
+              exit 0
+            fi
+            echo "attempt $attempt failed with status $status"
+            sleep 15
+          done
+          exit 1
       - name: list build output
         run: ls -lh build/libs
+      - name: write summary
+        run: |
+          echo "### Build output" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          ls -1 build/libs/*.jar >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
       - name: capture build artifacts
         uses: actions/upload-artifact@v7
         with:
