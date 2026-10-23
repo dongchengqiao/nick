@@ -100,7 +100,7 @@ public class NickClientConfig {
 			} else {
 				save();
 			}
-		} catch (Exception e) {
+			} catch (Exception e) {
 			Nick.LOGGER.error("Failed to load nick client config", e);
 		}
 	}

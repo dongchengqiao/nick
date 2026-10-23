@@ -7,12 +7,14 @@ import com.dongchengqiao.nick.mixin.PlayerInfoAccessor;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerInfo;
+import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.scores.PlayerTeam;
 
+import java.lang.reflect.Field;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -98,6 +100,34 @@ public final class NickClientUtil {
 		}
 	}
 
+	public static ChatType.Bound rewriteDisguisedBound(ChatType.Bound bound) {
+		DisplayMode mode = NickClientConfig.getDisplayMode(DisplayLocation.CHAT);
+		if (mode != DisplayMode.HIDE && mode != DisplayMode.NICK_AND_ORIGINAL) {
+			return bound;
+		}
+		PlayerInfo info = findSenderPlayer(bound.name());
+		if (info == null) {
+			return bound;
+		}
+		Component displayName = buildDisplayName(info, mode);
+		if (displayName == null) {
+			return bound;
+		}
+		return new ChatType.Bound(bound.chatType(), formatWithTeam(info.getTeam(), displayName), bound.targetName());
+	}
+
+	private static Component buildDisplayName(PlayerInfo info, DisplayMode mode) {
+		String originalName = info.getProfile().name();
+		String nickname = getNicknameByUuid(info.getProfile().id());
+		if (mode == DisplayMode.HIDE) {
+			return Component.literal(originalName);
+		}
+		if (mode == DisplayMode.NICK_AND_ORIGINAL && nickname != null && !nickname.equals(originalName)) {
+			return Component.literal("[" + nickname + "]" + originalName);
+		}
+		return null;
+	}
+
 	public static Component rewriteSystemMessage(Component message) {
 		DisplayMode mode = NickClientConfig.getDisplayMode(DisplayLocation.CHAT);
 		if (mode != DisplayMode.HIDE && mode != DisplayMode.NICK_AND_ORIGINAL) {
@@ -107,23 +137,32 @@ public final class NickClientUtil {
 		return message;
 	}
 
+	private static void invalidateDecomposition(TranslatableContents contents) {
+		try {
+			Field decomposedWith = TranslatableContents.class.getDeclaredField("decomposedWith");
+			decomposedWith.setAccessible(true);
+			decomposedWith.set(contents, null);
+			Field decomposedParts = TranslatableContents.class.getDeclaredField("decomposedParts");
+			decomposedParts.setAccessible(true);
+			decomposedParts.set(contents, null);
+		} catch (ReflectiveOperationException ignored) {
+		}
+	}
+
 	private static void rewriteComponent(Component component, DisplayMode mode) {
 		if (component.getContents() instanceof TranslatableContents translatable) {
 			int senderIndex = senderIndex(translatable.getKey());
 			Object[] args = translatable.getArgs();
-			if (senderIndex >= 0 && senderIndex < args.length && args[senderIndex] instanceof Component sender) {
+			Component sender = senderIndex >= 0 && senderIndex < args.length
+				? asComponent(args[senderIndex])
+				: null;
+			if (senderIndex >= 0 && senderIndex < args.length && sender != null) {
 				PlayerInfo info = findSenderPlayer(sender);
 				if (info != null) {
-					String originalName = info.getProfile().name();
-					String nickname = getNicknameByUuid(info.getProfile().id());
-					Component displayName = null;
-					if (mode == DisplayMode.HIDE) {
-						displayName = Component.literal(originalName);
-					} else if (nickname != null && !nickname.equals(originalName)) {
-						displayName = Component.literal("[" + nickname + "]" + originalName);
-					}
+					Component displayName = buildDisplayName(info, mode);
 					if (displayName != null) {
 						args[senderIndex] = formatWithTeam(info.getTeam(), displayName);
+						invalidateDecomposition(translatable);
 					}
 				}
 			}
@@ -136,6 +175,16 @@ public final class NickClientUtil {
 		for (Component sibling : component.getSiblings()) {
 			rewriteComponent(sibling, mode);
 		}
+	}
+
+	private static Component asComponent(Object arg) {
+		if (arg instanceof Component component) {
+			return component;
+		}
+		if (arg instanceof String text) {
+			return Component.literal(text);
+		}
+		return null;
 	}
 
 	private static int senderIndex(String key) {

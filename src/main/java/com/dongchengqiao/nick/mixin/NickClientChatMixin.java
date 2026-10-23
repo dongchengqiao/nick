@@ -75,6 +75,18 @@ public class NickClientChatMixin {
 	}
 
 	@ModifyArg(
+		method = "handleDisguisedChat",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/client/multiplayer/chat/ChatListener;handleDisguisedChatMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/ChatType$Bound;)V"
+		),
+		index = 1
+	)
+	private ChatType.Bound modifyDisguisedBound(ChatType.Bound bound) {
+		return NickClientUtil.rewriteDisguisedBound(bound);
+	}
+
+	@ModifyArg(
 		method = "handleSystemChat",
 		at = @At(
 			value = "INVOKE",
