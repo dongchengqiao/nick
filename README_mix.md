@@ -7,8 +7,8 @@ A Carpet-based Fabric nickname mod supporting Unicode names, multi-language tran
 
 ## 前置 / Dependencies
 
-- Fabric Loader ≥0.19.2
-- Fabric API ≥0.149.0+26.1.2
+- Fabric Loader ≥0.19.5
+- Fabric API ≥0.149.0+26.1.2（请使用对应游戏版本的 Fabric API / use the Fabric API for your game version）
 - **Carpet** (任何版本 any version)
 
 ---
@@ -97,7 +97,7 @@ When installed, use ModMenu to configure display modes. Without it, all nickname
 
 ## 技术信息 / Technical Info
 
-- Minecraft 版本 Version: 26.1
-- 框架 Framework: Fabric Loader 0.19.2 / Fabric API 0.149.0+26.1.2
+- Minecraft 版本 Version: 26.1 – 26.4（26.4 为快照 snapshot-5，请下载对应版本文件 / download the matching file）
+- 框架 Framework: Fabric Loader 0.19.5 / Fabric API 0.149.0+26.1.2 – 0.164.1+26.4
 - 硬依赖 Hard dependency: Carpet（翻译、规则系统 / translation & rule system）
 - 主类 Main class: `com.dongchengqiao.nick.Nick`

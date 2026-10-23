@@ -66,16 +66,36 @@ public final class NickClientUtil {
 		if (prefix != null) {
 			result.append(prefix);
 		}
-		if (team.getColor() != ChatFormatting.RESET) {
-			result.append(name.copy().withStyle(team.getColor()));
-		} else {
-			result.append(name);
-		}
+		MutableComponent coloredName = name.copy();
+		applyTeamColor(team, coloredName);
+		result.append(coloredName);
 		Component suffix = team.getPlayerSuffix();
 		if (suffix != null) {
 			result.append(suffix);
 		}
 		return result;
+	}
+
+	private static void applyTeamColor(PlayerTeam team, MutableComponent name) {
+		try {
+			Object color = PlayerTeam.class.getMethod("getColor").invoke(team);
+			if (color instanceof ChatFormatting formatting) {
+				if (formatting != ChatFormatting.RESET) {
+					name.withStyle(formatting);
+				}
+				return;
+			}
+			if (color instanceof java.util.Optional<?> optional) {
+				Object teamColor = optional.orElse(null);
+				if (teamColor != null) {
+					Object textColor = teamColor.getClass().getMethod("textColor").invoke(teamColor);
+					if (textColor instanceof net.minecraft.network.chat.TextColor tc) {
+						name.withStyle(style -> style.withColor(tc));
+					}
+				}
+			}
+		} catch (ReflectiveOperationException ignored) {
+		}
 	}
 
 	public static Component rewriteSystemMessage(Component message) {

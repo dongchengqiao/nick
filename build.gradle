@@ -16,6 +16,10 @@ repositories {
 			includeGroup "maven.modrinth"
 		}
 	}
+	maven {
+		name = "Carpet"
+		url = "https://masa.dy.fi/maven/"
+	}
 }
 
 dependencies {
@@ -36,7 +40,7 @@ dependencies {
 	}
 
 	// Carpet
-	implementation "maven.modrinth:carpet:26.1"
+	implementation project.carpet_dependency
 }
 
 processResources {

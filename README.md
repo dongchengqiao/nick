@@ -6,8 +6,8 @@
 
 ## 前置
 
-- Fabric Loader ≥0.19.2
-- Fabric API ≥0.149.0+26.1.2
+- Fabric Loader ≥0.19.5
+- Fabric API ≥0.149.0+26.1.2（请使用对应游戏版本的 Fabric API / use the Fabric API for your game version）
 - **Carpet** (任何版本)
 
 ## 命令
@@ -77,7 +77,7 @@
 
 ## 技术信息
 
-- Minecraft 版本：26.1
-- 框架：Fabric Loader 0.19.2 / Fabric API 0.149.0+26.1.2
+- Minecraft 版本：26.1 – 26.4（26.4 为快照 26.4-snapshot-5，请下载对应版本文件）
+- 框架：Fabric Loader 0.19.5 / Fabric API 0.149.0+26.1.2 ~ 0.164.1+26.4
 - 硬依赖：Carpet（翻译、规则系统）
 - 主类：`com.dongchengqiao.nick.Nick`

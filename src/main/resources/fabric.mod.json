@@ -25,11 +25,12 @@
 	"depends": {
 		"carpet": "*",
 		"fabricloader": ">=0.19.2",
-		"minecraft": ">=26.1",
+		"minecraft": ">=26.1 <26.5",
 		"java": ">=25",
 		"fabric-api": "*"
 	},
 	"suggests": {
-		"modmenu": "*"
+		"modmenu": "*",
+		"cloth-config": "*"
 	}
 }

@@ -15,7 +15,35 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: "26.1"
+            minecraft: "26.1"
+            fabric_api: "0.149.0+26.1.2"
+            cloth_config: "26.1.154"
+            modmenu: "19.0.0-alpha.1"
+            carpet: "maven.modrinth:carpet:26.1"
+          - label: "26.2"
+            minecraft: "26.2"
+            fabric_api: "0.161.0+26.2"
+            cloth_config: "26.2.155"
+            modmenu: "20.0.3"
+            carpet: "maven.modrinth:carpet:26.2"
+          - label: "26.3"
+            minecraft: "26.3"
+            fabric_api: "0.164.0+26.3"
+            cloth_config: "26.3.159"
+            modmenu: "21.0.0"
+            carpet: "carpet:fabric-carpet:26.3+v261008"
+          - label: "26.4"
+            minecraft: "26.4-snapshot-5"
+            fabric_api: "0.164.1+26.4"
+            cloth_config: "26.3.159"
+            modmenu: "22.0.0-alpha.2"
+            carpet: "carpet:fabric-carpet:26.4-beta-4+v261021"
     steps:
       - name: checkout repository
         uses: actions/checkout@v6
@@ -47,14 +75,20 @@ jobs:
       - name: setup gradle
         uses: gradle/actions/setup-gradle@v6
       - name: build
-        timeout-minutes: 25
+        timeout-minutes: 30
         run: |
           set +e
           for attempt in 1 2 3; do
             echo "::group::Gradle build attempt $attempt"
             timeout 600 ./gradlew build --no-daemon --console=plain --stacktrace \
               -Dorg.gradle.internal.http.connectionTimeout=30000 \
-              -Dorg.gradle.internal.http.socketTimeout=60000
+              -Dorg.gradle.internal.http.socketTimeout=60000 \
+              -Pmod_version="${{ steps.version.outputs.value }}+${{ matrix.label }}" \
+              -Pminecraft_version="${{ matrix.minecraft }}" \
+              -Pfabric_api_version="${{ matrix.fabric_api }}" \
+              -Pcloth_config_version="${{ matrix.cloth_config }}" \
+              -Pmodmenu_version="${{ matrix.modmenu }}" \
+              -Pcarpet_dependency="${{ matrix.carpet }}"
             status=$?
             echo "::endgroup::"
             if [ "$status" -eq 0 ]; then
@@ -68,14 +102,14 @@ jobs:
         run: ls -lh build/libs
       - name: write summary
         run: |
-          echo "### Build output" >> "$GITHUB_STEP_SUMMARY"
+          echo "### Build output (${{ matrix.label }})" >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
           ls -1 build/libs/*.jar >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
       - name: capture build artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: nick-${{ steps.version.outputs.value }}
+          name: nick-${{ steps.version.outputs.value }}+${{ matrix.label }}
           path: build/libs/*.jar
           if-no-files-found: error
           retention-days: 30
