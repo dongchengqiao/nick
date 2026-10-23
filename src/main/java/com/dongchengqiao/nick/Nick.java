@@ -1,7 +1,9 @@
 package com.dongchengqiao.nick;
 
 import carpet.CarpetServer;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundPlayerInfoUpdatePacket;
@@ -16,7 +18,9 @@ public class Nick implements ModInitializer {
 		CarpetServer.manageExtension(new NickExtension());
 
 		NickConfig.load();
-		NickClientConfig.load();
+		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+			NickClientConfig.load();
+		}
 
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
 			ServerPlayer player = handler.player;

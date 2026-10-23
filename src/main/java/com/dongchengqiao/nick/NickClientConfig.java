@@ -3,6 +3,7 @@ package com.dongchengqiao.nick;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.nio.file.Files;
@@ -80,6 +81,9 @@ public class NickClientConfig {
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
 	public static void load() {
+		if (FabricLoader.getInstance().getEnvironmentType() != EnvType.CLIENT) {
+			return;
+		}
 		try {
 			if (Files.exists(CONFIG_PATH)) {
 				JsonObject obj = GSON.fromJson(Files.readString(CONFIG_PATH), JsonObject.class);
@@ -132,6 +136,9 @@ public class NickClientConfig {
 	}
 
 	public static void save() {
+		if (FabricLoader.getInstance().getEnvironmentType() != EnvType.CLIENT) {
+			return;
+		}
 		try {
 			Files.createDirectories(CONFIG_PATH.getParent());
 			JsonObject obj = new JsonObject();
