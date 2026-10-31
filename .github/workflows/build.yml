@@ -80,7 +80,7 @@ jobs:
           set +e
           for attempt in 1 2 3; do
             echo "::group::Gradle build attempt $attempt"
-            timeout 600 ./gradlew build --no-daemon --console=plain --stacktrace \
+            timeout 600 ./gradlew build sourcesJar --no-daemon --console=plain --stacktrace \
               -Dorg.gradle.internal.http.connectionTimeout=30000 \
               -Dorg.gradle.internal.http.socketTimeout=60000 \
               -Pmod_version="${{ steps.version.outputs.value }}+${{ matrix.label }}" \
@@ -100,6 +100,15 @@ jobs:
           exit 1
       - name: list build output
         run: ls -lh build/libs
+      - name: verify sources jar
+        run: |
+          if ls build/libs/*-sources.jar 1> /dev/null 2>&1; then
+            echo "✅ Sources jar found."
+            ls -lh build/libs/*-sources.jar
+          else
+            echo "❌ Sources jar NOT found. Check withSourcesJar() in build.gradle."
+            exit 1
+          fi
       - name: write summary
         run: |
           echo "### Build output (${{ matrix.label }})" >> "$GITHUB_STEP_SUMMARY"
@@ -113,15 +122,3 @@ jobs:
           path: build/libs/*.jar
           if-no-files-found: error
           retention-days: 30
-      - name: verify sources jar
-        run: |
-          if ls build/libs/*-sources.jar 1> /dev/null 2>&1; then
-            echo "✅ Sources jar found."
-            ls -lh build/libs/*-sources.jar
-          else
-            echo "❌ Sources jar NOT found. Check withSourcesJar() in build.gradle."
-            exit 1
-          fi
-      - name: verify sources jar
-        run: |
-          ls -1 build/libs/*-sources.jar
