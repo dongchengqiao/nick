@@ -122,3 +122,6 @@ jobs:
             echo "❌ Sources jar NOT found. Check withSourcesJar() in build.gradle."
             exit 1
           fi
+      - name: verify sources jar
+        run: |
+          ls -1 build/libs/*-sources.jar
