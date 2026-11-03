@@ -115,10 +115,19 @@ jobs:
           echo '```' >> "$GITHUB_STEP_SUMMARY"
           ls -1 build/libs/*.jar >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
-      - name: capture build artifacts
+      - name: upload main jar (unzipped)
         uses: actions/upload-artifact@v7
         with:
           name: nick-${{ steps.version.outputs.value }}+${{ matrix.label }}
-          path: build/libs/*.jar
+          path: build/libs/nick-*.jar
+          archive: false
+          if-no-files-found: error
+          retention-days: 30
+      - name: upload sources jar (unzipped)
+        uses: actions/upload-artifact@v7
+        with:
+          name: nick-${{ steps.version.outputs.value }}+${{ matrix.label }}-sources
+          path: build/libs/*-sources.jar
+          archive: false
           if-no-files-found: error
           retention-days: 30
