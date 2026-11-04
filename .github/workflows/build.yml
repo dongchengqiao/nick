@@ -119,7 +119,9 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: nick-${{ steps.version.outputs.value }}+${{ matrix.label }}
-          path: build/libs/nick-*.jar
+          path: |
+            build/libs/nick-*.jar
+            !build/libs/*-sources.jar
           archive: false
           if-no-files-found: error
           retention-days: 30
